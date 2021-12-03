@@ -1,18 +1,20 @@
 {
-  "name": "room",
+  "name": "chatcord",
   "version": "1.0.0",
-  "description": "takl with friend",
-  "main": "index.js",
+  "description": "Realtime chat app with rooms",
+  "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node server",
+    "dev": "nodemon server"
   },
-  "keywords": [
-    "room"
-  ],
-  "author": "author of room",
-  "license": "ISC",
+  "author": "Brad Traversy",
+  "license": "MIT",
   "dependencies": {
     "express": "^4.17.1",
-    "express-validator": "^6.13.0"
+    "moment": "^2.24.0",
+    "socket.io": "^2.4.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.2"
   }
 }

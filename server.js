@@ -1,22 +1,27 @@
-var express = require("express");
-var app = express();
-var server = require("http").createServer(app);
-var io = require("socket.io")(server);
+const path = require('path');
+const http = require('http');
+const express = require('express');
+const socketio = require('socket.io');
+const formatMessage = require('./utils/messages');
+const {
+  userJoin,
+  getCurrentUser,
+  userLeave,
+  getRoomUsers
+} = require('./utils/users');
 
-app.use(express.static("public"));
+const app = express();
+const server = http.createServer(app);
+const io = socketio(server);
 
-app.get("/home", function(req, res, next) {
-  res.sendFile(__dirname + "/public/views/chat.html");
-});
+// Set static folder
+app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/login', require('./public/views/login.html'));
+const botName = 'ChatCord Bot';
 
-
-
-//======================================
-const botName = 'CHAT BOX';
+// Run when client connects
 io.on('connection', socket => {
-  console.log(socket);
+  // console.log(socket);
   socket.on('joinRoom', ({ username, room }) => {
     const user = userJoin(socket.id, username, room);
     socket.join(user.room);
@@ -62,28 +67,6 @@ io.on('connection', socket => {
   });
 });
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3001;
+
 server.listen(PORT, () => console.log(`Server running on port ${PORT}`));
-
-
-
-
-
-
-// const path = require('path');
-// const http = require('http');
-// const express = require('express');
-// const socketio = require('socket.io');
-// var fs = require("fs");
-// const app = express();
-// const server = http.createServer(app);
-// const io = socketio(server);
-
-// http.createServer((request, response) => {
-//     fs.readFile('public/chat.html',function(err,data){
-//         response.writeHead(200,{'content-Type':'text/html'});
-//         response.write(data);
-//         response.end();
-//     });
-// }).listen(8000);
-// console.log("starting server....");
